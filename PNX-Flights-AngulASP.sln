@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35506.116 d17.12
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AngAspPnx.Server", "AngAspPnx.Server\AngAspPnx.Server.csproj", "{CFCDFD74-A5BB-4BC7-9474-4E8946EBA542}"
+EndProject
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "angasppnx.client", "angasppnx.client\angasppnx.client.esproj", "{EB58121D-AD2F-42B8-AF00-6CAA1459F643}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CFCDFD74-A5BB-4BC7-9474-4E8946EBA542}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CFCDFD74-A5BB-4BC7-9474-4E8946EBA542}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CFCDFD74-A5BB-4BC7-9474-4E8946EBA542}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CFCDFD74-A5BB-4BC7-9474-4E8946EBA542}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB58121D-AD2F-42B8-AF00-6CAA1459F643}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB58121D-AD2F-42B8-AF00-6CAA1459F643}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB58121D-AD2F-42B8-AF00-6CAA1459F643}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{EB58121D-AD2F-42B8-AF00-6CAA1459F643}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB58121D-AD2F-42B8-AF00-6CAA1459F643}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB58121D-AD2F-42B8-AF00-6CAA1459F643}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
