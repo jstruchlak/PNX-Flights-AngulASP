@@ -5,6 +5,16 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./search-flights.component.css']
 })
 export class SearchFlightsComponent implements OnInit {
+
+  searchResult: any = [
+    "PNX Airways",
+    "PNX ASP Airlines",
+    "PNX Angular Flights"
+  ]
+
+
+
+
   constructor() { }
   ngOnInit(): void {
   }
