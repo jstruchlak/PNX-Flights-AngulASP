@@ -1,1 +1,25 @@
 @import '~@fortawesome/fontawesome-free/css/all.css';
+
+body {
+  background: linear-gradient(120deg, #ffffff, #f9f9f9, #e3eaf2, #d6e0f5, #eef2f3);
+  background-size: 200% 200%; 
+  animation: gradientShift 8s ease infinite; 
+  margin: 0;
+  padding: 0;
+  font-family: 'Roboto', sans-serif;
+}
+
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
