@@ -43,7 +43,7 @@
         <input class="form-control" type="number" placeholder="1" />
         <div class="input-group-text">Passengers</div>
 
-        <button type="submit" class="btn btn-primary">
+        <button (click)="search()" type="submit" class="btn btn-primary">
           <i class="fas fa-search"></i>
         </button>
       </div>
@@ -58,7 +58,7 @@
     <div class="card-body" style="padding: 20px; background-color:#e5ecf26e">
       <h6 class="card-title">{{flight.airline}}</h6>
       <div class="card-title" style="color:#ff3939">
-        {{flight.remainingNumberOfSeats}} remaining seats
+        {{flight.remaningNumberOfSeats}} remaining seats
       </div>
       <div class="d-grid text-center g-2">
         <div class="row">
@@ -68,17 +68,17 @@
             </div>
             <div class="col">
               <i class="fa-solid fa-location-dot">
-                {{flight.departure.place}}
+                {{flight.departure?.place}}
               </i>
             </div>
             <div class="col m-2">
               <i class="fa-regular"></i>
               <!--use angular pipes | -->
-              {{flight.departure.time | date }}
+              {{flight.departure?.time | date }}
             </div>
             <div class="col">
               <i class="fa-regular fa-clock"></i>
-              {{flight.departure.time | date:'shortTime' }}
+              {{flight.departure?.time | date:'shortTime' }}
             </div>
           </div>
           <div class="col">
@@ -100,16 +100,16 @@
             </div>
             <div class="col">
               <i class="fa-solid fa-location-dot">
-                {{flight.arrival.place}}
+                {{flight.arrival?.place}}
               </i>
             </div>
             <div class="col m-2">
               <i class="fa-regular"></i>
-              {{flight.arrival.time | date }}
+              {{flight.arrival?.time | date }}
             </div>
             <div class="col">
               <i class="fa-regular fa-clock"></i>
-              {{flight.arrival.time | date:'shortTime' }}
+              {{flight.arrival?.time | date:'shortTime' }}
             </div>
           </div>
         </div>
