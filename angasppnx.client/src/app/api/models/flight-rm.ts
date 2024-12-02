@@ -9,5 +9,5 @@ export interface FlightRm {
   departure?: TimePlaceRm;
   id?: string;
   price?: string | null;
-  remaningNumberOfSeats?: number;
+  remaingNumberOfSeats?: number;
 }
