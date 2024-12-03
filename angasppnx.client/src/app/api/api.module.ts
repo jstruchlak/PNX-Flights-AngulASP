@@ -7,6 +7,7 @@ import { HttpClient } from '@angular/common/http';
 import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
 
 import { FlightService } from './services/flight.service';
+import { PassengerService } from './services/passenger.service';
 
 /**
  * Module that provides all services and configuration.
@@ -17,6 +18,7 @@ import { FlightService } from './services/flight.service';
   declarations: [],
   providers: [
     FlightService,
+    PassengerService,
     ApiConfiguration
   ],
 })
