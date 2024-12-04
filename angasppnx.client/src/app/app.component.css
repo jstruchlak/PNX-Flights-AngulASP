@@ -1,11 +1,11 @@
 .header {
-  background-image: url('/assets/pn3.jpg');
+  background-image: url('/assets/pm1.jpg');
   height: 300px;
   background-size: cover;
 }
 
 .footer {
-  height: 200px;
+  height: 300px;
 }
 
   .footer a {

@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FlightService } from '../api/services/flight.service';
 import { FlightRm } from '../api/models/flight-rm';
 import { AuthService } from '../auth/auth.service';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { BookDto } from '../api/models/book-dto';
 
 @Component({
@@ -15,7 +15,7 @@ export class BookFlightComponent implements OnInit {
   flightId: string = 'not loaded';
   flight: FlightRm = {};
   form = this.fb.group({
-    number: [1],
+    number: [1, Validators.compose([Validators.required, Validators.min(1), Validators.max(254)])],
   });
 
   constructor(
@@ -52,39 +52,47 @@ export class BookFlightComponent implements OnInit {
     );
   }
 
-  private handleError(err: any): void {
-    if (err.status === 404) {
-      alert('Flight Not Found');
-      this.router.navigate(['/search-flights']);
+  private handleError = (err: any) => {
+
+    if (err.status == 404) {
+      alert("Flight not found!")
+      this.router.navigate(['/search-flights'])
     }
 
-    console.error('Response Error:', {
-      status: err.status,
-      statusText: err.statusText,
-      error: err,
-    });
+    console.log("Response Error. Status: ", err.status)
+    console.log("Response Error. Status Text: ", err.statusText)
+    console.log(err)
   }
 
-  book(): void {
-    const numberOfPassengers = this.form.get('number')?.value;
+  book() {
 
-    if (!numberOfPassengers || typeof numberOfPassengers !== 'number') {
-      console.error('Invalid number of passengers.');
+    if (this.form.invalid)
       return;
-    }
 
-    console.log(
-      `Booking ${numberOfPassengers} passengers for the flight ${this.flightId}`
-    );
+
+    console.log(`Booking ${this.form.get('number')?.value} passengers for the flight: ${this.flight.id}`)
 
     const booking: BookDto = {
       flightId: this.flight.id,
       passengerEmail: this.authService.currentUser?.email,
       numberOfSeats: this.form.get('number')?.value ?? undefined
+
     }
 
     this.flightService.bookFlight({ body: booking })
-      .subscribe(_ => this.router.navigate(['/my-booking']),
-        this.handleError);
+      .subscribe({
+        next: () => this.router.navigate(['/my-booking']),
+        error: err => {
+          console.error('Booking error:', err);
+          this.handleError(err); // Ensure this.handleError is implemented to show user-friendly messages.
+        }
+      });
+
+
   }
+
+  get number() {
+    return this.form.controls.number
+  }
+
 }
