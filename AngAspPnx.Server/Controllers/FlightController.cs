@@ -103,7 +103,7 @@ namespace Flights.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(500)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(200)]
+        [ProducesResponseType(201)]
         public IActionResult Book(BookDTO dto)
         {
             try
@@ -117,11 +117,13 @@ namespace Flights.Controllers
 
                 var flightFound = flights.Any(f => f.Id == dto.FlightId);
 
-                if (flightFound ==  false)
-                    return NotFound();
+                if (!flightFound)
+                    return NotFound($"Flight with ID {dto.FlightId} not found.");
 
                 Bookings.Add(dto);
-                return CreatedAtAction(nameof(Find), new { id = dto.FlightId });
+
+                // Ensure CreatedAtAction references a valid action with matching route parameters.
+                return CreatedAtAction(nameof(Find), new { id = dto.FlightId }, dto);
             }
             catch (Exception ex)
             {
@@ -129,6 +131,7 @@ namespace Flights.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
             }
         }
+
 
 
     }
