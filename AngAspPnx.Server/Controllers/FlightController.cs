@@ -1,5 +1,7 @@
 using AngAspPnx.Server.ReadModels;
 using Microsoft.AspNetCore.Mvc;
+using AngAspPnx.Server.DTO;
+
 
 namespace Flights.Controllers
 {
@@ -11,7 +13,13 @@ namespace Flights.Controllers
 
         static Random random = new Random();
 
+        static private IList<BookDTO> Bookings = new List<BookDTO>();
+
+
         static private FlightRm[] flights = new FlightRm[]
+
+
+
             {
         new (   Guid.NewGuid(),
                 "American Airlines",
@@ -89,7 +97,40 @@ namespace Flights.Controllers
 
             return Ok(flight);
         }
-        
+
+        /* Swagger API Docs*/
+        [HttpPost]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(500)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(200)]
+        public IActionResult Book(BookDTO dto)
+        {
+            try
+            {
+                if (dto == null)
+                {
+                    return BadRequest("Invalid booking data.");
+                }
+
+                System.Diagnostics.Debug.WriteLine($"Booking a new flight {dto.FlightId}");
+
+                var flightFound = flights.Any(f => f.Id == dto.FlightId);
+
+                if (flightFound ==  false)
+                    return NotFound();
+
+                Bookings.Add(dto);
+                return CreatedAtAction(nameof(Find), new { id = dto.FlightId });
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
+            }
+        }
+
+
     }
 }
 
