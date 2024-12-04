@@ -1,14 +1,31 @@
-:host {
-    max-width: 1280px;
-    padding: 2rem;
-    text-align: center;
+.header {
+  background-image: url('/assets/pn3.jpg');
+  height: 300px;
+  background-size: cover;
 }
 
-th, td {
-    padding-left: 1rem;
-    padding-right: 1rem;
+.footer {
+  height: 200px;
 }
 
-table {
-    margin: 0 auto;
+  .footer a {
+    color: white;
+  }
+
+.header {
+  animation: fadeInAnimation ease 1s;
+  animation-iteration-count: 1;
+  /* animation-fill-mode: forwards; */
+}
+
+@keyframes fadeInAnimation {
+  0% {
+    opacity: 0;
+    margin-left: -30px;
+  }
+
+  100% {
+    margin-left: 0px;
+    opacity: 1;
+  }
 }
