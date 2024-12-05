@@ -3,24 +3,45 @@ using AngAspPnx.Server.ReadModels;
 
 namespace AngAspPnx.Server.Domain.Entities
 {
-    public record Flight(
-        Guid Id,
-        string Airline,
-        string Price,
-        TimePlace Departure,
-        TimePlace Arrival,
-        int RemaingNumberOfSeats
-        )
+    public class Flight
 
     {
+        public Guid Id { get; set; }
+        public string Airline { get; set; }
+        public string Price { get; set; }
+        public TimePlace Departure { get; set; }
+        public TimePlace Arrival { get; set; }
+        public int RemainingNumberOfSeats { get; private set; }
+        public int RemaingNumberOfSeat { get; set; }
         public IList<Booking> Bookings = new List<Booking>();
-        public int RemaingNumberOfSeats { get; set; } = RemaingNumberOfSeats;
+
+        public Flight()
+        {
+
+        }
+
+        public Flight(
+        Guid id,
+        string airline,
+        string price,
+        TimePlace departure,
+        TimePlace arrival,
+        int remaingNumberOfSeats
+        )
+        {
+            Id = id;
+            Airline = airline;
+            Price = price;
+            Departure = departure;
+            Arrival = arrival;
+            RemainingNumberOfSeats = remaingNumberOfSeats;
+        }
 
         public object? MakeBooking(string passengerEmail, byte numberOfSeats)
         {
             var flight = this;
 
-            if (flight.RemaingNumberOfSeats < numberOfSeats)
+            if (flight.RemainingNumberOfSeats < numberOfSeats)
             {
                 return new OverbookError();
             }
@@ -32,7 +53,7 @@ namespace AngAspPnx.Server.Domain.Entities
                     numberOfSeats
                 ));
 
-            flight.RemaingNumberOfSeats -= numberOfSeats;
+            flight.RemainingNumberOfSeats -= numberOfSeats;
             return null;
         }
     }
