@@ -1,7 +1,8 @@
 using AngAspPnx.Server.ReadModels;
 using Microsoft.AspNetCore.Mvc;
 using AngAspPnx.Server.DTO;
-
+using AngAspPnx.Server.Domain.Entities;
+using AngAspPnx.Server.Domain.Errors;
 
 namespace Flights.Controllers
 {
@@ -13,10 +14,8 @@ namespace Flights.Controllers
 
         static Random random = new Random();
 
-        static private IList<BookDTO> Bookings = new List<BookDTO>();
 
-
-        static private FlightRm[] flights = new FlightRm[]
+        static private Flight[] flights = new Flight[]
 
 
 
@@ -24,50 +23,50 @@ namespace Flights.Controllers
         new (   Guid.NewGuid(),
                 "American Airlines",
                 random.Next(90, 5000).ToString(),
-                new TimePlaceRm("Los Angeles",DateTime.Now.AddHours(random.Next(1, 3))),
-                new TimePlaceRm("Istanbul",DateTime.Now.AddHours(random.Next(4, 10))),
-                    random.Next(1, 853)),
+                new TimePlace("Los Angeles",DateTime.Now.AddHours(random.Next(1, 3))),
+                new TimePlace("Istanbul",DateTime.Now.AddHours(random.Next(4, 10))),
+                    2),
         new (   Guid.NewGuid(),
                 "Deutsche BA",
                 random.Next(90, 5000).ToString(),
-                new TimePlaceRm("Munchen",DateTime.Now.AddHours(random.Next(1, 10))),
-                new TimePlaceRm("Schiphol",DateTime.Now.AddHours(random.Next(4, 15))),
+                new TimePlace("Munchen",DateTime.Now.AddHours(random.Next(1, 10))),
+                new TimePlace("Schiphol",DateTime.Now.AddHours(random.Next(4, 15))),
                 random.Next(1, 853)),
         new (   Guid.NewGuid(),
                 "British Airways",
                 random.Next(90, 5000).ToString(),
-                new TimePlaceRm("London, England",DateTime.Now.AddHours(random.Next(1, 15))),
-                new TimePlaceRm("Vizzola-Ticino",DateTime.Now.AddHours(random.Next(4, 18))),
+                new TimePlace("London, England",DateTime.Now.AddHours(random.Next(1, 15))),
+                new TimePlace("Vizzola-Ticino",DateTime.Now.AddHours(random.Next(4, 18))),
                     random.Next(1, 853)),
         new (   Guid.NewGuid(),
                 "Basiq Air",
                 random.Next(90, 5000).ToString(),
-                new TimePlaceRm("Amsterdam",DateTime.Now.AddHours(random.Next(1, 21))),
-                new TimePlaceRm("Glasgow, Scotland",DateTime.Now.AddHours(random.Next(4, 21))),
+                new TimePlace("Amsterdam",DateTime.Now.AddHours(random.Next(1, 21))),
+                new TimePlace("Glasgow, Scotland",DateTime.Now.AddHours(random.Next(4, 21))),
                     random.Next(1, 853)),
         new (   Guid.NewGuid(),
                 "BB Heliag",
                 random.Next(90, 5000).ToString(),
-                new TimePlaceRm("Zurich",DateTime.Now.AddHours(random.Next(1, 23))),
-                new TimePlaceRm("Baku",DateTime.Now.AddHours(random.Next(4, 25))),
+                new TimePlace("Zurich",DateTime.Now.AddHours(random.Next(1, 23))),
+                new TimePlace("Baku",DateTime.Now.AddHours(random.Next(4, 25))),
                     random.Next(1, 853)),
         new (   Guid.NewGuid(),
                 "Adria Airways",
                 random.Next(90, 5000).ToString(),
-                new TimePlaceRm("Ljubljana",DateTime.Now.AddHours(random.Next(1, 15))),
-                new TimePlaceRm("Warsaw",DateTime.Now.AddHours(random.Next(4, 19))),
+                new TimePlace("Ljubljana",DateTime.Now.AddHours(random.Next(1, 15))),
+                new TimePlace("Warsaw",DateTime.Now.AddHours(random.Next(4, 19))),
                     random.Next(1, 853)),
         new (   Guid.NewGuid(),
                 "ABA Air",
                 random.Next(90, 5000).ToString(),
-                new TimePlaceRm("Praha Ruzyne",DateTime.Now.AddHours(random.Next(1, 55))),
-                new TimePlaceRm("Paris",DateTime.Now.AddHours(random.Next(4, 58))),
+                new TimePlace("Praha Ruzyne",DateTime.Now.AddHours(random.Next(1, 55))),
+                new TimePlace("Paris",DateTime.Now.AddHours(random.Next(4, 58))),
                     random.Next(1, 853)),
         new (   Guid.NewGuid(),
                 "AB Corporate Aviation",
                 random.Next(90, 5000).ToString(),
-                new TimePlaceRm("Le Bourget",DateTime.Now.AddHours(random.Next(1, 58))),
-                new TimePlaceRm("Zagreb",DateTime.Now.AddHours(random.Next(4, 60))),
+                new TimePlace("Le Bourget",DateTime.Now.AddHours(random.Next(1, 58))),
+                new TimePlace("Zagreb",DateTime.Now.AddHours(random.Next(4, 60))),
                     random.Next(1, 853))
             };
 
@@ -78,10 +77,21 @@ namespace Flights.Controllers
 
         [ProducesResponseType(400)]
         [ProducesResponseType(500)]
-        [ProducesResponseType(typeof(IEnumerable<FlightRm>), 200)]
+        [ProducesResponseType(typeof(IEnumerable<Flight>), 200)]
         [HttpGet]
         public IEnumerable<FlightRm> Search()
-        => flights;
+        {
+            var flightRmList = flights.Select(flight => new FlightRm(
+                flight.Id,
+                flight.Airline,
+                flight.Price,
+                new TimePlaceRm(flight.Departure.Place.ToString(), flight.Departure.Time),
+                new TimePlaceRm(flight.Arrival.Place.ToString(), flight.Arrival.Time),
+                flight.RemaingNumberOfSeats
+                )).ToArray();
+
+            return flightRmList;
+        }
 
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(400)]
@@ -95,7 +105,16 @@ namespace Flights.Controllers
             if (flight == null)
                 return NotFound();
 
-            return Ok(flight);
+            var readModel = new FlightRm(
+                flight.Id,
+                flight.Airline,
+                flight.Price,
+                new TimePlaceRm(flight.Departure.Place.ToString(),flight.Departure.Time),
+                new TimePlaceRm(flight.Arrival.Place.ToString(),flight.Arrival.Time),
+                flight.RemaingNumberOfSeats
+                );
+
+            return Ok(readModel);
         }
 
         /* Swagger API Docs*/
@@ -115,12 +134,15 @@ namespace Flights.Controllers
 
                 System.Diagnostics.Debug.WriteLine($"Booking a new flight {dto.FlightId}");
 
-                var flightFound = flights.Any(f => f.Id == dto.FlightId);
+                var flight = flights.SingleOrDefault(f => f.Id == dto.FlightId);
 
-                if (!flightFound)
+                if (flight == null)
                     return NotFound($"Flight with ID {dto.FlightId} not found.");
 
-                Bookings.Add(dto);
+                var error =  flight.MakeBooking(dto.PassengerEmail, dto.NumberOfSeats);
+
+                if (error is OverbookError)
+                    return Conflict(new { message = "Not enough seats" });
 
                 // Ensure CreatedAtAction references a valid action with matching route parameters.
                 return CreatedAtAction(nameof(Find), new { id = dto.FlightId }, dto);
