@@ -18,6 +18,9 @@ namespace AngAspPnx.Server.Data
         {
             modelBuilder.Entity<Passenger>().HasKey(p => p.Email);
 
+            modelBuilder.Entity<Flight>().Property(p => p.RemaingNumberOfSeat)
+                .IsConcurrencyToken();
+
             modelBuilder.Entity<Flight>().OwnsOne(f => f.Departure);
             modelBuilder.Entity<Flight>().OwnsOne(f => f.Arrival);
         }

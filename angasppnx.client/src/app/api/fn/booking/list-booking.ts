@@ -8,14 +8,16 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
-import { Flight } from '../../models/flight';
+import { BookingRm } from '../../models/booking-rm';
 
-export interface SearchFlight$Params {
+export interface ListBooking$Params {
+  email: string;
 }
 
-export function searchFlight(http: HttpClient, rootUrl: string, params?: SearchFlight$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<Flight>>> {
-  const rb = new RequestBuilder(rootUrl, searchFlight.PATH, 'get');
+export function listBooking(http: HttpClient, rootUrl: string, params: ListBooking$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<BookingRm>>> {
+  const rb = new RequestBuilder(rootUrl, listBooking.PATH, 'get');
   if (params) {
+    rb.path('email', params.email, {});
   }
 
   return http.request(
@@ -23,9 +25,9 @@ export function searchFlight(http: HttpClient, rootUrl: string, params?: SearchF
   ).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
-      return r as StrictHttpResponse<Array<Flight>>;
+      return r as StrictHttpResponse<Array<BookingRm>>;
     })
   );
 }
 
-searchFlight.PATH = '/Flight';
+listBooking.PATH = '/Booking/{email}';

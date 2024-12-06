@@ -17,6 +17,7 @@ import { findFlight } from '../fn/flight/find-flight';
 import { FindFlight$Params } from '../fn/flight/find-flight';
 import { findFlight$Plain } from '../fn/flight/find-flight-plain';
 import { FindFlight$Plain$Params } from '../fn/flight/find-flight-plain';
+import { Flight } from '../models/flight';
 import { FlightRm } from '../models/flight-rm';
 import { searchFlight } from '../fn/flight/search-flight';
 import { SearchFlight$Params } from '../fn/flight/search-flight';
@@ -38,7 +39,7 @@ export class FlightService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  searchFlight$Plain$Response(params?: SearchFlight$Plain$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<FlightRm>>> {
+  searchFlight$Plain$Response(params?: SearchFlight$Plain$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<Flight>>> {
     return searchFlight$Plain(this.http, this.rootUrl, params, context);
   }
 
@@ -48,9 +49,9 @@ export class FlightService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  searchFlight$Plain(params?: SearchFlight$Plain$Params, context?: HttpContext): Observable<Array<FlightRm>> {
+  searchFlight$Plain(params?: SearchFlight$Plain$Params, context?: HttpContext): Observable<Array<Flight>> {
     return this.searchFlight$Plain$Response(params, context).pipe(
-      map((r: StrictHttpResponse<Array<FlightRm>>): Array<FlightRm> => r.body)
+      map((r: StrictHttpResponse<Array<Flight>>): Array<Flight> => r.body)
     );
   }
 
@@ -60,7 +61,7 @@ export class FlightService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  searchFlight$Response(params?: SearchFlight$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<FlightRm>>> {
+  searchFlight$Response(params?: SearchFlight$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<Flight>>> {
     return searchFlight(this.http, this.rootUrl, params, context);
   }
 
@@ -70,9 +71,9 @@ export class FlightService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  searchFlight(params?: SearchFlight$Params, context?: HttpContext): Observable<Array<FlightRm>> {
+  searchFlight(params?: SearchFlight$Params, context?: HttpContext): Observable<Array<Flight>> {
     return this.searchFlight$Response(params, context).pipe(
-      map((r: StrictHttpResponse<Array<FlightRm>>): Array<FlightRm> => r.body)
+      map((r: StrictHttpResponse<Array<Flight>>): Array<Flight> => r.body)
     );
   }
 

@@ -4,6 +4,7 @@ using AngAspPnx.Server.DTO;
 using AngAspPnx.Server.Domain.Entities;
 using AngAspPnx.Server.Domain.Errors;
 using AngAspPnx.Server.Data;
+using System.Data;
 
 namespace Flights.Controllers
 {
@@ -92,7 +93,14 @@ namespace Flights.Controllers
 
                 if (error is OverbookError)
                     return Conflict(new { message = "Not enough seats" });
-                _entities.SaveChanges();
+                try
+                {
+                    _entities.SaveChanges();
+                } catch (DBConcurrencyException e)
+                {
+                    return Conflict(new { message = "An error occured while booking" });
+                }
+
 
                 // Ensure CreatedAtAction references a valid action with matching route parameters.
                 return CreatedAtAction(nameof(Find), new { id = dto.FlightId }, dto);
